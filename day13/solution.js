@@ -23,11 +23,10 @@ for(var i = 0; i < dots.length; i++) {
 for(var i = 0; i < foldinst.length; i++) {
     const temp = foldinst[i].split("=");
     const path = parseInt(temp[1], 10);
-    const dir = temp[0].slice(temp[0].length - 1);
-    folds.push([dir, path]);
-    //console.log(`${dir} ${path}`);
+    const axis = temp[0].slice(temp[0].length - 1);
+    folds.push([axis, path]);
 }
-console.log(folds);
+//console.log(folds);
 //printgrid();
 //execute fold 1
 
@@ -50,14 +49,14 @@ function printgrid(){
     console.log(line);
 }
 
-function fold(dir, path) {
+function fold(axis, path) {
     let newgrid = new Map();
-    if (dir === "x") {
+    if (axis === "x") {
         //fold left
         grid.forEach((v,k) => {
             if(v.x > path) {
                 //get the mirrored point
-                const newx = path - (v.x - path)
+                const newx = 2*path - v.x;
                 newgrid.set(newx + "," + v.y, {"x":newx,"y":v.y,"display": "#"});
             } else {
                 newgrid.set(k, v);
@@ -68,7 +67,7 @@ function fold(dir, path) {
         grid.forEach((v,k) => {
             if(v.y > path) {
                 //get the mirrored point
-                const newy = path - (v.y - path);
+                const newy = 2*path - v.y;
                 newgrid.set(v.x + "," + newy, {"x":v.x,"y":newy,"display": "#"});
             } else {
                 newgrid.set(k, v);
