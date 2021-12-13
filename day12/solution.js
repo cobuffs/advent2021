@@ -34,7 +34,7 @@ function generatepaths(node, path, lowerdoubled = false) {
     visited.push(node.label);
     path.push(node.label);
     if(node.label === "end"){
-        //console.log(path);
+        console.log(path);
         foundpaths.push(path.join(","));
     } else {
         for(var i = 0; i < node.connections.length; i++) {
