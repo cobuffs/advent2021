@@ -36,7 +36,7 @@ function stepitup() {
             console.log(step);
         }
         step++;
-        //printgrid(octopi,step++);
+        //printgrid(octopi,step++); 
     }
 }
 
