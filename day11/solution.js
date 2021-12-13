@@ -32,7 +32,7 @@ function stepitup() {
             updateadjacent(xy[0],xy[1],flashes,processed);
         }
         if(processed.length === 100) {
-            loopit = false;
+            loopit = false; 
             console.log(step);
         }
         step++;
