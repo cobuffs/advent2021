@@ -30,7 +30,7 @@ for(var i = 0; i < foldinst.length; i++) {
 console.log(folds);
 //printgrid();
 //execute fold 1
-fold(folds[0][0], folds[0][1]);
+
 for(var i = 0; i < folds.length; i++) {
     fold(folds[i][0], folds[i][1]);
 }
