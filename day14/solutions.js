@@ -24,13 +24,13 @@ let combos = new Map();
 for(var i = 0; i < template.length - 1; i++) {
     let newpoly = template.substr(i,2);
     if(combos.has(newpoly)) {
-        combos.get(newpoly).occurs = combos.get(newpoly).occurs + 1;
+        combos.get(newpoly).occurs = BigInt(combos.get(newpoly).occurs + 1n);
     } else {
-        combos.set(newpoly, {"occurs":1});
+        combos.set(newpoly, {"occurs":BigInt(1)});
     }
 }
 
-for(var step = 0; step < 40; step++) {
+for(var step = 0; step < 1000000; step++) {
     //reset our polymer counts
     polymer.counts = new Map();
     polymer.counts.set(polymer.first, 1);
@@ -42,16 +42,17 @@ for(var step = 0; step < 40; step++) {
             const key = inst.expanded[i];
             if(newcombos.has(key)) {
                 foo = newcombos.get(key);
-                foo.occurs +=  v.occurs;
+                foo.occurs +=  BigInt(v.occurs);
             }
             else {
                 //first time we've seen this mapping
-                foo = {"occurs":  v.occurs};
+                foo = {"occurs":  BigInt(v.occurs)};
                 newcombos.set(key, foo);
             }
         }
     });
     combos = new Map(newcombos);
+    if(step % 10000 === 0) console.log(step);
 }
 updatesums();
 getdiff();
@@ -61,20 +62,22 @@ function updatesums() {
     sums.set(polymer.first, 1);
     combos.forEach((v,k) => {
         let key = k.substr(1,1);
-        if(sums.has(key)) sums.set(key, sums.get(key) + v.occurs);
-        else sums.set(key, v.occurs);
+        if(sums.has(key)) sums.set(key, BigInt(sums.get(key)) + BigInt(v.occurs));
+        else sums.set(key, BigInt(v.occurs));
     });
     polymer.counts = sums;
 }
 
 function getdiff(){
-    let min = polymer.counts.get("C");
-    let max = 0;
+    let min = BigInt(polymer.counts.get("C"));
+    let max = BigInt(0);
     polymer.counts.forEach(v => {
-        if(v < min) min = v;
-        if(v > max) max = v;
+        if(v < min) min = BigInt(v);
+        if(v > max) max = BigInt(v);
     });
-    console.log(`Diff: ${max - min}`);
+    //console.log(`Diff: ${max - min}`);
+    let diff = BigInt(max) - BigInt(min);
+    fs.writeFileSync('millionout.txt', diff.toString());
 }
 
 function bruteforce(polystr) {
