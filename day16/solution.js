@@ -90,8 +90,6 @@ function parsepacket(start, binstr) {
             pointer += 5;
         }
         packet["literal"] = parseInt(literal,2);
-        //keep moving the pointer until its divisible by 4
-        //while (pointer %4 !== 0) pointer++;
     } else {
         //operator
         const lentypeid = binstr.substr(start + 6, 1);
