@@ -54,7 +54,7 @@ console.log(stoppedxs);
 //try a bunch of positive ys and see what happens
 let possibleys = new Map();
 let stepoptionsfory = new Map();
-for(var i = ymin; i < 150; i++) {
+for(var i = ymin; i < Math.abs(ymin); i++) {
     let yvel = i;
     let step = 1;
     let currentpos = yvel;
