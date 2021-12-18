@@ -8,15 +8,18 @@ for(var i = 0; i < input.length; i++) {
     snailnums.push(eval(input[i]));
 }
 
+//when parsing, keep left (can be a val or an array), right, previous, next)
+
 while (explodesam1.length > 0) {
     let elem = explodesam1.shift();
     let depth = 1;
+    console.log(`depth: ${depth} - ${elem}`);
     while(true && Array.isArray(elem)) {
         elem = elem.shift();
         depth++;
         console.log(`depth: ${depth} - ${elem}`);
         if(depth === 4) {
-            //we should have a pair of 2 numbers? always?
+            //we should have a pair of 2 numbers? always? how do we get back up a layer?
         }
         if(!Array.isArray(elem)) break;
     }
