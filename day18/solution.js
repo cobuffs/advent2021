@@ -1,18 +1,40 @@
 const fs = require('fs');
-let input = fs.readFileSync('sample.txt', 'utf8').toString().trim().split("\r\n");
+let input = fs.readFileSync('input.txt', 'utf8').toString().trim().split("\r\n");
 let sample1 = '[[[[[9,8],1],2],3],4]';
 let sample2 = '[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]';
 let sample3 = '[7,[6,[5,[4,[3,2]]]]]';
 let sample4 = '[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]';
 let working = sample4.split("");
+let snailnums = [];
 
 let main = input.shift();
+snailnums.push(main);
 while(input.length > 0){
     const newone = input.shift();
+    snailnums.push(newone);
     main = add(main, newone);
     main = reduce(main);
 }
 console.log(main);
+console.log(getmag(main));
+
+//now we need all combinations of snailnums with their mags
+let mags = [];
+for(var i = 0; i < snailnums.length; i++) {
+    for(var j = 0; j < snailnums.length; j++) {
+        if (i === j) continue;
+        else {
+            mags.push(add(snailnums[i], snailnums[j]));
+        }
+    }
+}
+let updatedmags = [];
+mags.map(v => {
+    let newv = reduce(v);
+    updatedmags.push(getmag(newv));
+});
+console.log(updatedmags.sort((a,b) => b-a));
+
 function reduce(snailnum) {
     let working = snailnum.split("");
     let action = true;
@@ -54,7 +76,9 @@ function split(working, index) {
 
 function getmag(working) {
     //The magnitude of a pair is 3 times the magnitude of its left element plus 2 times the magnitude of its right element.
-    
+    let datas = eval(working);
+    if(!Array.isArray(datas)) return parseInt(datas,10);
+    return (3 * getmag(JSON.stringify(datas[0]))) + (2 * getmag(JSON.stringify(datas[1])));
 }
 
 function trytoexplode(working) {
@@ -122,7 +146,7 @@ function trytoexplode(working) {
             }
         }
     }
-    console.log(updated.join(""));
+    //console.log(updated.join(""));
 
     return {"updated": updated, "exploded": exploded, "needtosplit": needtosplit, "splitindex": splitindexes};
 }
