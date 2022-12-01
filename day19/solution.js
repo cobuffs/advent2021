@@ -26,7 +26,7 @@ for(var i = 0; i < input.length; i++) {
 //build distances for scanner 0;
 activescanner = scanners.get("0");
 buildonedistance(activescanner);
-activescanner.scanners.get("1");
+activescanner = scanners.get("1");
 buildonedistance(activescanner);
 
 //look for overlap in scanner 1
@@ -34,16 +34,26 @@ lookforoverlap(scanners.get("0"), scanners.get("1"));
 
 console.log("done");
 
-function arreq(arr1, arr2) {
-    return (arr1[0] === arr2[0] && arr1[1] === arr2[1] && arr1[2] === arr2[2]);
-}
-
 function lookforoverlap(s1, s2) {
     //build a list of shared distances
     let shareddistances = [];
     for(var i = 0; i < s1.beacons.length; i++) {
-        
+        const firstbeacondistances = s1.beacons[i].distancestoothers;
+        for(var j = 0; j < s2.beacons.length; j++) {
+            const secondbeacondistances = s2.beacons[j].distancestoothers;
+            let overlap = firstbeacondistances.filter(dist => {
+                if(dist !== "0,0,0" && secondbeacondistances.includes(dist)) return true;
+            });
+            console.log(overlap);
+        }
     }
+    console.log(shareddistances);
+    return shareddistances;
+}
+
+
+function arreq(arr1, arr2) {
+    return (arr1[0] === arr2[0] && arr1[1] === arr2[1] && arr1[2] === arr2[2]);
 }
 
 function buildonedistance(activescanner) {
@@ -52,7 +62,7 @@ function buildonedistance(activescanner) {
         let distances = activescanner.beacons[i].distancestoothers;
         for(var j = 0; j < activescanner.beacons.length; j++) {
             const point2 = activescanner.beacons[j].beaconloc;
-            distances.push([point1[0]-point2[0], point1[1]-point2[1], point1[2]-point2[2]]);
+            distances.push([point1[0]-point2[0], point1[1]-point2[1], point1[2]-point2[2]].toString());
         }
     }
 }
@@ -157,7 +167,7 @@ function generatepoints(point) {
     let oy = point[1];
     let oz = point[2];
     //generate 24 points x,y,z
-    for(var i = 0; i < 1; i++){
+    for(var i = 0; i < 2; i++){
         points.push([ox,oy,oz]);
         points.push(rotate3d([ox,oy,oz], Math.PI/2));
         points.push(rotate3d([ox,oy,oz], Math.PI));
@@ -199,8 +209,7 @@ function generatepoints(point) {
         points.push(rotate3d([oz,oy,ox], 1.5*Math.PI));
 
         ox *= -1;
-        oy *= -1;
-        oz *= -1;
+
     }
     return points;
 }
